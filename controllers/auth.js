@@ -1,23 +1,31 @@
 import { StatusCodes } from "http-status-codes";
-import { BadRequest } from "../errors/index.js";
 import { asyncWrapper } from "../middleware/asyncWrapper.js";
 import { User } from "../models/User.js";
-import bycript from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { BadRequest, UnauthenticatedError } from "../errors/index.js";
+
+// import { BadRequest } from "../errors/index.js";
 
 export const register = asyncWrapper(async (req, res, next) => {
-  const { name, password, email } = req.body;
-
-  const salt = await bycript.genSalt(10);
-  const hashedPassword = await bycript.hash(password, salt);
-  const tempUser = { name, email, password: hashedPassword };
-
   //   if (!name || !email || !password) {
   //     return next(new BadRequest("Please Provide name, email and password"));
   //   }
-  const user = await User.create({ ...tempUser });
-  res.status(StatusCodes.CREATED).json({ user });
+  const user = await User.create({ ...req.body });
+  const token = user.createJWT();
+  res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
 });
 
 export const login = asyncWrapper(async (req, res, next) => {
-  res.send("login user");
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new BadRequest("Please provide email and password"));
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return next(new UnauthenticatedError("User doesn't exist!"));
+  } else {
+    const token = user.createJWT();
+    res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
+  }
 });
