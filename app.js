@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import { connectDB } from "./db/connect.js";
 import { errorHandlerMiddleware } from "./middleware/error-handler.js";
 import { notFound } from "./middleware/not-found.js";
+import authRouter from "./routes/auth.js";
+import jobsRouter from "./routes/jobs.js";
 
 dotenv.config();
 
@@ -16,9 +18,8 @@ const start = async () => {
     server.use(express.json());
 
     // Route
-    server.get("/", (req, res) => {
-      res.send("jobs api");
-    });
+    server.use("/api/v1/auth", authRouter);
+    server.use("/api/v1/jobs", jobsRouter);
 
     // Not found middleware
     server.use(notFound);
