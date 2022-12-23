@@ -24,8 +24,11 @@ export const login = asyncWrapper(async (req, res, next) => {
   const user = await User.findOne({ email });
   if (!user) {
     return next(new UnauthenticatedError("User doesn't exist!"));
-  } else {
-    const token = user.createJWT();
-    res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
   }
+  const isPasswordCorrect = await user.comparePassword(password);
+  if (!isPasswordCorrect) {
+    return next(new UnauthenticatedError("Invalid Credentials"));
+  }
+  const token = user.createJWT();
+  res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
 });
