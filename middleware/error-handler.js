@@ -13,7 +13,7 @@ export const errorHandlerMiddleware = (err, req, res, next) => {
     customError.statusCode = 400;
   }
 
-  if (Object.keys(err.errors).includes("email")) {
+  if (err.errors) {
     const field = Object.keys(err.errors);
     customError.msg = `Missing values for [${field}] fields, all values must be provided.`;
     customError.statusCode = 400;
