@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./db/connect.js";
 import { errorHandlerMiddleware } from "./middleware/error-handler.js";
 import { notFound } from "./middleware/not-found.js";
+import { auth } from "./middleware/authentication.js";
 import authRouter from "./routes/auth.js";
 import jobsRouter from "./routes/jobs.js";
 
@@ -19,7 +20,7 @@ const start = async () => {
 
     // Route
     server.use("/api/v1/auth", authRouter);
-    server.use("/api/v1/jobs", jobsRouter);
+    server.use("/api/v1/jobs", auth, jobsRouter);
 
     // Not found middleware
     server.use(notFound);

@@ -1,15 +1,15 @@
 import { StatusCodes } from "http-status-codes";
 import { asyncWrapper } from "../middleware/asyncWrapper.js";
 import { User } from "../models/User.js";
-import jwt from "jsonwebtoken";
 import { BadRequest, UnauthenticatedError } from "../errors/index.js";
 
 // import { BadRequest } from "../errors/index.js";
 
 export const register = asyncWrapper(async (req, res, next) => {
-  //   if (!name || !email || !password) {
-  //     return next(new BadRequest("Please Provide name, email and password"));
-  //   }
+  // const { name, email, password } = req.body;
+  // if (!name || !email || !password) {
+  //   return next(new BadRequest("Please Provide name, email and password"));
+  // }
   const user = await User.create({ ...req.body });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
