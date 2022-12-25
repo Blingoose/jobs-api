@@ -3,8 +3,6 @@ import { asyncWrapper } from "../middleware/asyncWrapper.js";
 import { User } from "../models/User.js";
 import { BadRequest, UnauthenticatedError } from "../errors/index.js";
 
-// import { BadRequest } from "../errors/index.js";
-
 export const register = asyncWrapper(async (req, res, next) => {
   // const { name, email, password } = req.body;
   // if (!name || !email || !password) {

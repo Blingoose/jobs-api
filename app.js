@@ -7,6 +7,11 @@ import { notFound } from "./middleware/not-found.js";
 import { auth } from "./middleware/authentication.js";
 import authRouter from "./routes/auth.js";
 import jobsRouter from "./routes/jobs.js";
+//extra security packages
+import helmet from "helmet";
+import cors from "cors";
+import xss from "xss-clean";
+import rateLimiter from "express-rate-limit";
 
 dotenv.config();
 
@@ -16,7 +21,20 @@ const start = async () => {
     const server = express();
 
     // Application specific middleware
+    server.set("trust proxy", 1);
+    server.use(
+      rateLimiter({
+        windowMs: 15 * 60 * 1000, //15 minutes
+        max: 100, // limit each IP to 100 request per windows.
+        standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+        legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+        message: "Too many request my friend! try again in 15 minutes",
+      })
+    );
     server.use(express.json());
+    server.use(helmet());
+    server.use(cors());
+    server.use(xss());
 
     // Route
     server.use("/api/v1/auth", authRouter);
