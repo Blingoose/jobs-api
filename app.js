@@ -14,11 +14,9 @@ import cors from "cors";
 import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
 
-//Swagger
+//swagger
 import swaggerUI from "swagger-ui-express";
 import yaml from "yamljs";
-import { appendFile } from "fs";
-import path from "path";
 const swaggerDocument = yaml.load("./swagger.yaml");
 
 dotenv.config();

@@ -107,7 +107,7 @@ paths:
             example:
               company: Lowkey
               position: Analytics decoder
-              status: pending
+              status: interview
         required: true
       responses:
         "200":
@@ -156,7 +156,7 @@ paths:
                     email: mordi@gmail.com
                     password: "123456789"
             example:
-              name: mordi
+              name: Mordi
               email: mordi@gmail.com
               password: "123456789"
         required: true
