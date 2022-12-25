@@ -7,11 +7,18 @@ import { notFound } from "./middleware/not-found.js";
 import { auth } from "./middleware/authentication.js";
 import authRouter from "./routes/auth.js";
 import jobsRouter from "./routes/jobs.js";
+
 //extra security packages
 import helmet from "helmet";
 import cors from "cors";
 import xss from "xss-clean";
 import rateLimiter from "express-rate-limit";
+
+//Swagger
+import swaggerUI from "swagger-ui-express";
+import yaml from "yamljs";
+import { appendFile } from "fs";
+const swaggerDocument = yaml.load("./swagger.yaml");
 
 dotenv.config();
 
@@ -34,7 +41,12 @@ const start = async () => {
     server.use(cors());
     server.use(xss());
 
-    // Route
+    server.get("/", (req, res) => {
+      res.send("<h1>jobs API</h1>< href='/api-docs'>Documentation</a>");
+    });
+
+    // Route specific middleware
+    server.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
     server.use("/api/v1/auth", authRouter);
     server.use("/api/v1/jobs", auth, jobsRouter);
 
