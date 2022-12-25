@@ -42,7 +42,7 @@ const start = async () => {
     server.use(xss());
 
     server.get("/", (req, res) => {
-      res.send("<h1>jobs API</h1>< href='/api-docs'>Documentation</a>");
+      res.send('<h1>jobs API</h1>< href="/api-docs">Documentation</a>');
     });
 
     // Route specific middleware
