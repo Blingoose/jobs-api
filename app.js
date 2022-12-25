@@ -18,6 +18,7 @@ import rateLimiter from "express-rate-limit";
 import swaggerUI from "swagger-ui-express";
 import yaml from "yamljs";
 import { appendFile } from "fs";
+import path from "path";
 const swaggerDocument = yaml.load("./swagger.yaml");
 
 dotenv.config();
@@ -36,14 +37,11 @@ const start = async () => {
         message: "Too many request my friend! try again in 15 minutes",
       })
     );
+    server.use(express.static("./public"));
     server.use(express.json());
     server.use(helmet());
     server.use(cors());
     server.use(xss());
-
-    server.get("/", (req, res) => {
-      res.send('<h1>jobs API</h1><a href="/api-docs">Documentation</a>');
-    });
 
     // Route specific middleware
     server.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));

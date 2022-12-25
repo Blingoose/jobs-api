@@ -37,13 +37,15 @@ paths:
                 - example:
                     company: netflix
                     position: system engineer
+                    status: declined
             example:
               company: netflix
               position: system engineer
+              status: declined
         required: true
       responses:
         "200":
-          description: ""
+          description: '<b>NOTICE</b> For "status" the only valid inputs are: "pending" (default), "declined" or "interview". '
           headers: {}
       deprecated: false
       security:
@@ -101,13 +103,15 @@ paths:
                 - example:
                     company: Lowkey
                     position: Analytics decoder
+                    status: interview
             example:
               company: Lowkey
               position: Analytics decoder
+              status: pending
         required: true
       responses:
         "200":
-          description: ""
+          description: '<b>NOTICE</b> For "status" the only valid inputs are: "pending" (default), "declined" or "interview". '
           headers: {}
       deprecated: false
       security:
@@ -148,12 +152,12 @@ paths:
               allOf:
                 - $ref: "#/components/schemas/RegisteruserRequest"
                 - example:
-                    name: Andre
-                    email: andykatov@icloud.com
+                    name: Mordi
+                    email: mordi@gmail.com
                     password: "123456789"
             example:
-              name: Andre
-              email: andykatov@icloud.com
+              name: mordi
+              email: mordi@gmail.com
               password: "123456789"
         required: true
       responses:
@@ -177,10 +181,10 @@ paths:
               allOf:
                 - $ref: "#/components/schemas/LoginuserRequest"
                 - example:
-                    email: s.amar@icloud.com
+                    email: mordi@gmail.com
                     password: "123456789"
             example:
-              email: s.amar@icloud.com
+              email: mordi@gmail.com
               password: "123456789"
         required: true
       responses:
@@ -192,7 +196,7 @@ paths:
 components:
   schemas:
     UpdateJobRequest:
-      title: UpdateJobRequest
+      title: Update Job Request
       required:
         - company
         - position
@@ -201,12 +205,15 @@ components:
         company:
           type: string
         position:
+          type: string
+        status:
           type: string
       example:
-        company: Lowkey
+        company: lowkey
         position: Analytics decoder
+        status: interview
     CreateJobRequest:
-      title: CreateJobRequest
+      title: Create Job Request
       required:
         - company
         - position
@@ -215,12 +222,14 @@ components:
         company:
           type: string
         position:
+          type: string
+        status:
           type: string
       example:
         company: netflix
         position: system engineer
     RegisteruserRequest:
-      title: RegisteruserRequest
+      title: Register User Request
       required:
         - name
         - email
@@ -234,11 +243,11 @@ components:
         password:
           type: string
       example:
-        name: Andre
-        email: andykatov@icloud.com
+        name: Mordi
+        email: mordi@gmail.com
         password: "123456789"
     LoginuserRequest:
-      title: LoginuserRequest
+      title: Login User Request
       required:
         - email
         - password
@@ -249,13 +258,10 @@ components:
         password:
           type: string
       example:
-        email: s.amar@icloud.com
+        email: mordi@gmail.com
         password: "123456789"
   securitySchemes:
     bearer:
       type: http
       scheme: bearer
 security: []
-tags:
-  - name: jobs
-  - name: auth
