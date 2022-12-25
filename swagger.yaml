@@ -228,6 +228,7 @@ components:
       example:
         company: netflix
         position: system engineer
+        status: interview
     RegisteruserRequest:
       title: Register User Request
       required:
